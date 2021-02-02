@@ -12,7 +12,7 @@ inputs:
         description: 'Success or not ("true" or "1" = success | all other values are failed)'
         required: true
     commitMessage:
-        description: '(Optional) Pass the commit message "${{ github.event.head_commit.message }}"'
+        description: '(Optional) Pass the commit message "github.event.head_commit.message"'
         required: false
         default: ''
     customMessage:
