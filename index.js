@@ -29,7 +29,7 @@ function run() {
 
         // post message
         const axios = AxiosInstance(token);
-        axios('/chat.postMessage', {
+        axios.post('/chat.postMessage', {
             channel: channel,
             text: msgText,
             icon_emoji: msgIcon

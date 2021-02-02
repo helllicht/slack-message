@@ -54,7 +54,7 @@ function run() {
 
         // post message
         const axios = AxiosInstance(token);
-        axios('/chat.postMessage', {
+        axios.post('/chat.postMessage', {
             channel: channel,
             text: msgText,
             icon_emoji: msgIcon
@@ -4254,8 +4254,8 @@ module.exports = chooseIcon;
 const REF = process.env.GITHUB_REF.split('/').slice(2).join('/');
 
 // Default messages - you can use all known icons from slack e.g :smile:
-const failedMessage = `Deployment ist fehlgeschlagen! Branch: ${REF}`;
-const successMessage = `Deployment war erfolgreich! Branch: ${REF}`;
+const failedMessage = `*Deployment ist fehlgeschlagen!* \`Branch: ${REF}\``;
+const successMessage = `*Deployment war erfolgreich!* \`Branch: ${REF}\``;
 
 /**
  * @param {boolean} success
