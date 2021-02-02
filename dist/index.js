@@ -41,12 +41,13 @@ function run() {
         const token = core.getInput('slackToken', isRequired);
         const channel = core.getInput('channel', isRequired);
         const success = stringToBool(core.getInput('success', isRequired));
-        const customMessage = core.getInput('customMessage');
-        const customIcon = core.getInput('customIcon');
+        const commitMessage = core.getInput('commitMessage', isRequired);
+        const customMessage = core.getInput('customMessage', isRequired);
+        const customIcon = core.getInput('customIcon', isRequired);
 
         // decide which icon and text should be displayed
         const msgIcon = chooseIcon(success, customIcon);
-        const msgText = createMessage(success, customMessage);
+        const msgText = createMessage(success, commitMessage, customMessage);
 
         core.info(`Icon: ${msgIcon}`);
         core.info(`Message: ${msgText}`);
@@ -4259,17 +4260,28 @@ const successMessage = `*Deployment war erfolgreich!* \`Branch: ${REF}\``;
 
 /**
  * @param {boolean} success
- * @param customMessage
+ * @param {string} commitMessage
+ * @param {string} customMessage
  * @return {string}
  */
-let createMessage = function (success, customMessage = '') {
+let createMessage = function (success, commitMessage = '', customMessage = '') {
     if (typeof customMessage === 'string' && customMessage.length > 0) {
         return customMessage;
-    } else if (success) {
-        return successMessage;
     }
 
-    return failedMessage;
+    let message;
+
+    if (success) {
+        message = successMessage;
+    } else {
+        message = failedMessage
+    }
+
+    if (typeof commitMessage === 'string' && commitMessage.length > 0) {
+        message += ` \`commit: ${customMessage}\``;
+    }
+
+    return message;
 }
 
 module.exports = createMessage;

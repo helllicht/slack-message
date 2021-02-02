@@ -7,17 +7,28 @@ const successMessage = `*Deployment war erfolgreich!* \`Branch: ${REF}\``;
 
 /**
  * @param {boolean} success
- * @param customMessage
+ * @param {string} commitMessage
+ * @param {string} customMessage
  * @return {string}
  */
-let createMessage = function (success, customMessage = '') {
+let createMessage = function (success, commitMessage = '', customMessage = '') {
     if (typeof customMessage === 'string' && customMessage.length > 0) {
         return customMessage;
-    } else if (success) {
-        return successMessage;
     }
 
-    return failedMessage;
+    let message;
+
+    if (success) {
+        message = successMessage;
+    } else {
+        message = failedMessage
+    }
+
+    if (typeof commitMessage === 'string' && commitMessage.length > 0) {
+        message += ` \`commit: ${customMessage}\``;
+    }
+
+    return message;
 }
 
 module.exports = createMessage;
