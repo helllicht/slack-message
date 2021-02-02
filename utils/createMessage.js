@@ -1,3 +1,5 @@
+const core = require('@actions/core');
+
 // https://docs.github.com/en/actions/reference/environment-variables#default-environment-variables
 const REF = process.env.GITHUB_REF.split('/').slice(2).join('/');
 
@@ -13,19 +15,27 @@ const successMessage = `*Deployment war erfolgreich!* \`Branch: ${REF}\``;
  */
 let createMessage = function (success, commitMessage = '', customMessage = '') {
     if (typeof customMessage === 'string' && customMessage.length > 0) {
+        core.info('customMessage was passed');
+
         return customMessage;
     }
 
     let message;
 
     if (success) {
+        core.info('Use success default message.');
+
         message = successMessage;
     } else {
+        core.info('Use failure default message.');
+
         message = failedMessage
     }
 
     if (typeof commitMessage === 'string' && commitMessage.length > 0) {
-        message += ` \`commit: ${customMessage}\``;
+        core.info(`commitMessage was passed: ${commitMessage}`);
+
+        message += ` \`commit: ${commitMessage}\``;
     }
 
     return message;
