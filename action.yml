@@ -14,15 +14,12 @@ inputs:
     commitMessage:
         description: '(Optional) Pass the commit message "github.event.head_commit.message"'
         required: false
-        default: ''
     customMessage:
         description: '(Optional) Write your custom message (if used, no branch and commit information will be shown!)'
         required: false
-        default: ''
     customIcon:
         description: '(Optional) Choose a custom icon'
         required: false
-        default: ''
 
 runs:
     using: 'node12'

@@ -16,9 +16,9 @@ function run() {
         const token = core.getInput('slackToken', isRequired);
         const channel = core.getInput('channel', isRequired);
         const success = stringToBool(core.getInput('success', isRequired));
-        const commitMessage = core.getInput('commitMessage', isRequired);
-        const customMessage = core.getInput('customMessage', isRequired);
-        const customIcon = core.getInput('customIcon', isRequired);
+        const commitMessage = core.getInput('commitMessage');
+        const customMessage = core.getInput('customMessage');
+        const customIcon = core.getInput('customIcon');
 
         // decide which icon and text should be displayed
         const msgIcon = chooseIcon(success, customIcon);
