@@ -1,0 +1,23 @@
+name: 'helllicht/slack-action'
+description: 'helllicht internal slack-action'
+
+inputs:
+    token:
+        description: 'Slack bot token'
+        required: true
+    channel:
+        description: 'Slack Channel ID'
+        required: true
+    success:
+        description: 'Success or not ("true" or "1" = success | all other values are failed)'
+        required: true
+    customMessage:
+        description: '(Optional) Write your custom message'
+        required: false
+    customIcon:
+        description: '(Optional) Choose a custom icon'
+        required: false
+
+runs:
+    using: 'node12'
+    main: 'dist/index.js'

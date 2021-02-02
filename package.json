@@ -1,0 +1,22 @@
+{
+  "name": "slack-action",
+  "version": "1.0.0",
+  "description": "helllicht/slack-action",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "prepare": "ncc build index.js -o dist --source-map --license licenses.txt",
+    "all": "npm run lint && npm run prepare"
+  },
+  "author": "helllicht medien GmbH",
+  "license": "NONE",
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "axios": "^0.21.1",
+    "lodash": "^4.17.20"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.27.0",
+    "eslint": "^7.18.0"
+  }
+}
