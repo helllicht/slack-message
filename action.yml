@@ -2,7 +2,7 @@ name: 'helllicht/slack-action'
 description: 'helllicht internal slack-action'
 
 inputs:
-    token:
+    slackToken:
         description: 'Slack bot token'
         required: true
     channel:

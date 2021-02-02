@@ -13,7 +13,7 @@ function run() {
         const isRequired = { required: true };
 
         // input
-        const token = core.getInput('token', isRequired);
+        const token = core.getInput('slackToken', isRequired);
         const channel = core.getInput('channel', isRequired);
         const success = stringToBool(core.getInput('success', isRequired));
         const customMessage = core.getInput('customMessage');
