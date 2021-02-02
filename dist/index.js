@@ -25,7 +25,6 @@ module.exports = createInstance;
 
 const core = __nccwpck_require__(2186);
 const AxiosInstance = __nccwpck_require__(6077)
-const chooseIcon = __nccwpck_require__(3959);
 const createMessage = __nccwpck_require__(8565);
 const stringToBool = __nccwpck_require__(9740);
 
@@ -43,13 +42,10 @@ function run() {
         const success = stringToBool(core.getInput('success', isRequired));
         const commitMessage = core.getInput('commitMessage');
         const customMessage = core.getInput('customMessage');
-        const customIcon = core.getInput('customIcon');
 
         // decide which icon and text should be displayed
-        const msgIcon = chooseIcon(success, customIcon);
         const msgText = createMessage(success, commitMessage, customMessage);
 
-        core.info(`Icon: ${msgIcon}`);
         core.info(`Message: ${msgText}`);
         core.info(`Channel: ${channel}`);
 
@@ -58,7 +54,6 @@ function run() {
         axios.post('/chat.postMessage', {
             channel: channel,
             text: msgText,
-            icon_emoji: msgIcon
         })
             .then(() => {
                 core.info('Send message.')
@@ -4221,33 +4216,6 @@ module.exports = {
 
 /***/ }),
 
-/***/ 3959:
-/***/ ((module) => {
-
-// icons
-const failedIcon = ':x:';
-const successIcon = ':white_check_mark:';
-
-/**
- * @param {boolean} success
- * @param customIcon
- * @return {string}
- */
-let chooseIcon = function (success, customIcon = '') {
-    if (typeof customIcon === 'string' && customIcon.length > 0) {
-        return customIcon;
-    } else if (success) {
-        return successIcon;
-    }
-
-    return failedIcon;
-}
-
-module.exports = chooseIcon;
-
-
-/***/ }),
-
 /***/ 8565:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
@@ -4257,8 +4225,8 @@ const core = __nccwpck_require__(2186);
 const REF = process.env.GITHUB_REF.split('/').slice(2).join('/');
 
 // Default messages - you can use all known icons from slack e.g :smile:
-const failedMessage = `*Deployment ist fehlgeschlagen!* \`Branch: ${REF}\``;
-const successMessage = `*Deployment war erfolgreich!* \`Branch: ${REF}\``;
+const failedMessage = `:x: *Deployment ist fehlgeschlagen!* \`Branch: ${REF}\``;
+const successMessage = `:white_check_mark: *Deployment war erfolgreich!* \`Branch: ${REF}\``;
 
 /**
  * @param {boolean} success
@@ -4268,7 +4236,7 @@ const successMessage = `*Deployment war erfolgreich!* \`Branch: ${REF}\``;
  */
 let createMessage = function (success, commitMessage = '', customMessage = '') {
     if (typeof customMessage === 'string' && customMessage.length > 0) {
-        core.info('customMessage was passed');
+        core.info('customMessage was passed, no branch and commit information will be shown!');
 
         return customMessage;
     }

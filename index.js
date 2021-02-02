@@ -1,6 +1,5 @@
 const core = require('@actions/core');
 const AxiosInstance = require('./api/AxiosInstance')
-const chooseIcon = require('./utils/chooseIcon');
 const createMessage = require('./utils/createMessage');
 const stringToBool = require('./utils/stringToBool');
 
@@ -18,13 +17,10 @@ function run() {
         const success = stringToBool(core.getInput('success', isRequired));
         const commitMessage = core.getInput('commitMessage');
         const customMessage = core.getInput('customMessage');
-        const customIcon = core.getInput('customIcon');
 
         // decide which icon and text should be displayed
-        const msgIcon = chooseIcon(success, customIcon);
         const msgText = createMessage(success, commitMessage, customMessage);
 
-        core.info(`Icon: ${msgIcon}`);
         core.info(`Message: ${msgText}`);
         core.info(`Channel: ${channel}`);
 
@@ -33,7 +29,6 @@ function run() {
         axios.post('/chat.postMessage', {
             channel: channel,
             text: msgText,
-            icon_emoji: msgIcon
         })
             .then(() => {
                 core.info('Send message.')

@@ -17,9 +17,6 @@ inputs:
     customMessage:
         description: '(Optional) Write your custom message (if used, no branch and commit information will be shown!)'
         required: false
-    customIcon:
-        description: '(Optional) Choose a custom icon'
-        required: false
 
 runs:
     using: 'node12'

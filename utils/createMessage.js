@@ -4,8 +4,8 @@ const core = require('@actions/core');
 const REF = process.env.GITHUB_REF.split('/').slice(2).join('/');
 
 // Default messages - you can use all known icons from slack e.g :smile:
-const failedMessage = `*Deployment ist fehlgeschlagen!* \`Branch: ${REF}\``;
-const successMessage = `*Deployment war erfolgreich!* \`Branch: ${REF}\``;
+const failedMessage = `:x: *Deployment ist fehlgeschlagen!* \`Branch: ${REF}\``;
+const successMessage = `:white_check_mark: *Deployment war erfolgreich!* \`Branch: ${REF}\``;
 
 /**
  * @param {boolean} success
@@ -15,7 +15,7 @@ const successMessage = `*Deployment war erfolgreich!* \`Branch: ${REF}\``;
  */
 let createMessage = function (success, commitMessage = '', customMessage = '') {
     if (typeof customMessage === 'string' && customMessage.length > 0) {
-        core.info('customMessage was passed');
+        core.info('customMessage was passed, no branch and commit information will be shown!');
 
         return customMessage;
     }
