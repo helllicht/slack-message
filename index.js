@@ -23,6 +23,10 @@ function run() {
         const msgIcon = chooseIcon(success, customIcon);
         const msgText = createMessage(success, customMessage);
 
+        core.info(`Icon: ${msgIcon}`);
+        core.info(`Message: ${msgText}`);
+        core.info(`Channel: ${channel}`);
+
         // post message
         const axios = AxiosInstance(token);
         axios('/chat.postMessage', {
@@ -30,6 +34,14 @@ function run() {
             text: msgText,
             icon_emoji: msgIcon
         })
+            .then(() => {
+                core.info('Send message.')
+            })
+            .catch((error) => {
+                core.error('Message could not be send!');
+                core.error(error);
+                core.setFailed('Slack send error!')
+            })
 
     } catch (error) {
         core.setFailed(error.message);
