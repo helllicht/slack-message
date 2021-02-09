@@ -33,8 +33,6 @@ let createMessage = function (success, commitMessage = '', customMessage = '') {
     }
 
     if (typeof commitMessage === 'string' && commitMessage.length > 0) {
-        core.info(`commitMessage was passed: ${commitMessage}`);
-
         message += ` \`commit: ${commitMessage}\``;
     }
 
