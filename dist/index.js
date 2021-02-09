@@ -42,28 +42,64 @@ function run() {
         const success = stringToBool(core.getInput('success', isRequired));
         const commitMessage = core.getInput('commitMessage');
         const customMessage = core.getInput('customMessage');
-
-        // decide which icon and text should be displayed
-        const msgText = createMessage(success, commitMessage, customMessage);
-
-        core.info(`Message: ${msgText}`);
-        core.info(`Channel: ${channel}`);
-
-        // post message
         const axios = AxiosInstance(token);
-        axios.post('/chat.postMessage', {
-            channel: channel,
-            text: msgText,
+        let channelId = null;
+
+        axios.get('/conversations.list', {
+            params: {
+                limit: 1000 // max limit
+            }
         })
-            .then(() => {
-                core.info('Send message.')
+            .then((response) => {
+                if (!response.data.ok) {
+                    core.setFailed('API call for getting all channel ids failed!');
+                    throw new Error(response.data.error);
+                }
+                if (response.data.channels.length >= 999) {
+                    core.setFailed('I hope we won\'t reach this point xD, because max results is 1.000');
+                    throw new Error('Reached limit of this call, you have more than 1000 channels and need to implement a pagination mechanism!');
+                }
+
+                // if filter didn't find a correct object it will return an empty array;
+                let slackChannelList = [];
+                if (response.data.channels && response.data.channels.length > 0) {
+                    slackChannelList = response.data.channels.filter(slackChannels => slackChannels.name === channel)
+                }
+                if (slackChannelList.length > 1) {
+                    // is it een allowed to have two channel with the same name in slack? idk...
+                    core.warning('Found more than one channel with the given name! Script is choosing the first one.');
+                }
+                if (slackChannelList.length === 1 && slackChannelList[0].hasOwnProperty('id')) {
+                    channelId = slackChannelList[0].id;
+                } else {
+                    core.setFailed(`No Channel was found with given name: ${channel}`)
+                    throw new Error('Invalid channel was passed?! Probably a typo or channel has been deleted?')
+                }
+
+                // ### prepare message ###
+
+                // decide which icon and text should be displayed
+                const msgText = createMessage(success, commitMessage, customMessage);
+
+                core.info(`Channel: ${channel}`);
+                core.info(`Message: ${msgText}`);
+
+                axios.post('/chat.postMessage', {
+                    channel: channelId,
+                    text: msgText,
+                })
+                    .then(() => {
+                        core.info('Send message.')
+                    })
+                    .catch((error) => {
+                        core.error('Message could not be send!');
+                        core.error(error);
+                        core.setFailed('Slack send error!')
+                    });
             })
             .catch((error) => {
-                core.error('Message could not be send!');
-                core.error(error);
-                core.setFailed('Slack send error!')
-            })
-
+                core.setFailed(error);
+            });
     } catch (error) {
         core.setFailed(error.message);
     }

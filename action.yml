@@ -6,14 +6,15 @@ inputs:
         description: 'Slack bot token'
         required: true
     channel:
-        description: 'Slack Channel ID'
+        description: 'Slack Channel name'
         required: true
     success:
         description: 'Success or not ("true" or "1" = success | all other values are failed)'
         required: true
     commitMessage:
-        description: '(Optional) Pass the commit message "github.event.head_commit.message"'
+        description: '(Optional) Pass a commit message'
         required: false
+        default: ${{ github.event.head_commit.message }}
     customMessage:
         description: '(Optional) Write your custom message (if used, no branch and commit information will be shown!)'
         required: false
