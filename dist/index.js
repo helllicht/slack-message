@@ -21444,14 +21444,15 @@ const REF = process.env.GITHUB_REF.split('/').slice(2).join('/');
 /**
  * INFO:
  * use Markdown for formatting!
+ * https://api.slack.com/reference/surfaces/formatting#basics
  * https://docs.github.com/en/developers/webhooks-and-events/webhook-events-and-payloads#webhook-payload-example-1
  */
 
 const nl = '\n';
 
 // Default messages - you can use all known icons from slack e.g :smile:
-const failedMessage = `:x: *Deployment ist fehlgeschlagen!*${nl}\`Branch: ${REF}\``;
-const successMessage = `:white_check_mark: *Deployment war erfolgreich!*${nl}\`Branch: ${REF}\``;
+const failedMessage = `:x: *Deployment ist fehlgeschlagen!*${nl}*Branch:* \`${REF}\``;
+const successMessage = `:white_check_mark: *Deployment war erfolgreich!*${nl}*Branch:* \`${REF}\``;
 
 /**
  * @param {boolean} success
@@ -21473,11 +21474,11 @@ let createMessage = function (success, commitMessage = '', committer = '') {
     }
 
     if (typeof committer === 'string' && committer.length > 0) {
-        message += `${nl}\`committed by: ${committer}\``;
+        message += `${nl}*Committed by:* \`${committer}\``;
     }
 
     if (typeof commitMessage === 'string' && commitMessage.length > 0) {
-        message += `${nl}\`\`\`commit:\n${commitMessage}\`\`\``;
+        message += `${nl}\`\`\`${commitMessage}\`\`\``;
     }
 
     return message;
