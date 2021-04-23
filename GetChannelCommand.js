@@ -1,5 +1,5 @@
 const AxiosInstance = require('./api/AxiosInstance');
-const lodash = require('lodash');
+const { orderBy } = require('lodash');
 const readline = require("readline");
 
 const rl = readline.createInterface({
@@ -35,7 +35,7 @@ rl.question("Please paste your Slack token here:\n", function(token) {
                 })
             })
 
-            console.table(lodash.orderBy(simplifiedChannels, ['name'], ['asc']));
+            console.table(orderBy(simplifiedChannels, ['name'], ['asc']));
             rl.close();
         })
         .catch((error) => {

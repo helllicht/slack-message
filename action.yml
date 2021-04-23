@@ -15,6 +15,10 @@ inputs:
         description: '(Optional) Pass a commit message'
         required: false
         default: ${{ github.event.head_commit.message }}
+    committer:
+        description: '(Optional) Pass a committer (user)'
+        required: false
+        default: ${{ github.event.head_commit.committer.name }}
     customMessage:
         description: '(Optional) Write your custom message (if used, no branch and commit information will be shown!)'
         required: false

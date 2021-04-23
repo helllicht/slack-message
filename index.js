@@ -1,4 +1,5 @@
 const core = require('@actions/core');
+const { has } = require('lodash');
 const AxiosInstance = require('./api/AxiosInstance')
 const createMessage = require('./utils/createMessage');
 const stringToBool = require('./utils/stringToBool');
@@ -17,6 +18,7 @@ function run() {
         const success = stringToBool(core.getInput('success', isRequired));
         const commitMessage = core.getInput('commitMessage');
         const customMessage = core.getInput('customMessage');
+        const committer = core.getInput('committer');
         const axios = AxiosInstance(token);
         let channelId = null;
 
@@ -44,7 +46,7 @@ function run() {
                     // is it een allowed to have two channel with the same name in slack? idk...
                     core.warning('Found more than one channel with the given name! Script is choosing the first one.');
                 }
-                if (slackChannelList.length === 1 && slackChannelList[0].hasOwnProperty('id')) {
+                if (slackChannelList.length === 1 && has(slackChannelList[0], 'id')) {
                     channelId = slackChannelList[0].id;
                 } else {
                     core.setFailed(`No Channel was found with given name: ${channel}`)
@@ -54,13 +56,20 @@ function run() {
                 // ### prepare message ###
 
                 // decide which icon and text should be displayed
-                const msgText = createMessage(success, commitMessage, customMessage);
+                let msgText = '';
+                if (customMessage.length > 0) {
+                    core.info('customMessage was passed, no branch and commit information will be shown!');
+                    msgText = customMessage;
+                } else {
+                    msgText = createMessage(success, commitMessage, committer);
+                }
 
                 core.info(`Channel: ${channel}`);
                 core.info(`Message: ${msgText}`);
 
                 axios.post('/chat.postMessage', {
                     channel: channelId,
+                    mrkdwn: true,
                     text: msgText,
                 })
                     .then(() => {
