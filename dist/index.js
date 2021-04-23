@@ -21474,7 +21474,7 @@ let createMessage = function (success, commitMessage = '', committer = '') {
     }
 
     if (typeof committer === 'string' && committer.length > 0) {
-        message += `${nl}*Committed by:* \`${committer}\``;
+        message += `${nl}*Committer:* \`${committer}\``;
     }
 
     if (typeof commitMessage === 'string' && commitMessage.length > 0) {
