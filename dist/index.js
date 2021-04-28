@@ -21495,7 +21495,7 @@ let createMessage = function (success, commitMessage = '', committer = '') {
 
     if (!success) {
         const urlText = 'Zur Action';
-        const actionUrl = `<https://github.com/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.$GITHUB_RUN_ID}|${urlText}>`;
+        const actionUrl = `<https://github.com/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}|${urlText}>`;
         message += `${nl}${actionUrl}`;
     }
 
