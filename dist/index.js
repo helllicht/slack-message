@@ -21483,7 +21483,7 @@ let createMessage = function (success, commitMessage = '', committer = '') {
     }
 
     if (!success) {
-        const urlText = 'Action-Log ansehen';
+        const urlText = ':point_right: Action-Log ansehen';
         const actionUrl = `<https://github.com/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}|${urlText}>`;
         message += `${nl}${actionUrl}`;
     }
