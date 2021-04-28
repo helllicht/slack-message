@@ -1,8 +1,4 @@
 const core = require('@actions/core');
-const { has } = require('lodash');
-const AxiosInstance = require('./api/AxiosInstance')
-const createMessage = require('./utils/createMessage');
-const stringToBool = require('./utils/stringToBool');
 
 /**
  * The main function of the github action!
@@ -10,6 +6,18 @@ const stringToBool = require('./utils/stringToBool');
  */
 function run() {
     try {
+        core.info(`GITHUB_WORKFLOW: ${process.env.GITHUB_WORKFLOW}`);
+        core.info(`GITHUB_RUN_ID: ${process.env.GITHUB_RUN_ID	}`);
+        core.info(`GITHUB_RUN_NUMBER: ${process.env.GITHUB_RUN_NUMBER}`);
+        core.info(`GITHUB_JOB: ${process.env.GITHUB_JOB}`);
+        core.info(`GITHUB_ACTION: ${process.env.GITHUB_ACTION}`);
+        core.info(`GITHUB_ACTOR: ${process.env.GITHUB_ACTOR}`);
+        core.info(`GITHUB_REPOSITORY: ${process.env.GITHUB_REPOSITORY}`);
+        core.info(`GITHUB_EVENT_NAME: ${process.env.GITHUB_EVENT_NAME}`);
+        core.info(`GITHUB_EVENT_PATH: ${process.env.GITHUB_EVENT_PATH}`);
+        core.info(`GITHUB_WORKSPACE: ${process.env.GITHUB_WORKSPACE}`);
+        core.info(`GITHUB_REF: ${process.env.GITHUB_REF}`);
+        /*
         const isRequired = { required: true };
 
         // input
@@ -84,6 +92,7 @@ function run() {
             .catch((error) => {
                 core.setFailed(error);
             });
+            */
     } catch (error) {
         core.setFailed(error.message);
     }
