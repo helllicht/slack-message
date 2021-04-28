@@ -69,6 +69,7 @@ function run() {
 
                 axios.post('/chat.postMessage', {
                     channel: channelId,
+                    icon_emoji: ':github:',
                     mrkdwn: true,
                     text: msgText,
                 })

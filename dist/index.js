@@ -97,6 +97,7 @@ function run() {
 
                 axios.post('/chat.postMessage', {
                     channel: channelId,
+                    icon_emoji: ':github:',
                     mrkdwn: true,
                     text: msgText,
                 })
@@ -21479,6 +21480,12 @@ let createMessage = function (success, commitMessage = '', committer = '') {
 
     if (typeof commitMessage === 'string' && commitMessage.length > 0) {
         message += `${nl}\`\`\`${commitMessage}\`\`\``;
+    }
+
+    if (!success) {
+        const urlText = 'Action-Log ansehen';
+        const actionUrl = `<https://github.com/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}|${urlText}>`;
+        message += `${nl}${actionUrl}`;
     }
 
     return message;
