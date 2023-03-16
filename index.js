@@ -14,13 +14,24 @@ function run() {
 
         // input
         const token = core.getInput('slackToken', isRequired);
-        const channel = core.getInput('channel', isRequired);
+        let channel = core.getInput('channel', isRequired);
         const success = stringToBool(core.getInput('success', isRequired));
         const commitMessage = core.getInput('commitMessage');
         const customMessage = core.getInput('customMessage');
         const committer = core.getInput('committer');
         const axios = AxiosInstance(token);
         let channelId = null;
+
+        // Map certain channel names to a different channel name – might be necessary if a globally used channel is renamed
+        const channelMapping = {
+            'zz-deploybot': 'zz-deployment',
+        };
+
+        // Check if the channel name is in the mapping and if so, replace it with the mapped channel name
+        if (has(channelMapping, channel)) {
+            channel = channelMapping[channel];
+            core.info(`Channel name was mapped to ${channel}`);
+        }
 
         axios.get('/conversations.list', {
             params: {
